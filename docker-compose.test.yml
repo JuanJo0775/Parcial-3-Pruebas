@@ -9,3 +9,14 @@ services:
       - "5433:5432"
     tmpfs:
       - /var/lib/postgresql/data
+
+  api-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db-test:5432/ticketfast_test
+    ports:
+      - "8001:8000"
+    depends_on:
+      - db-test
