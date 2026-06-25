@@ -1,0 +1,49 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "pytest: all",
+            "type": "shell",
+            "command": ".\\.venv\\Scripts\\python.exe",
+            "args": [
+                "-m",
+                "pytest",
+                "tests",
+                "-v"
+            ],
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "pytest: system e2e",
+            "type": "shell",
+            "command": ".\\.venv\\Scripts\\python.exe",
+            "args": [
+                "-m",
+                "pytest",
+                "tests/system/test_sistema_e2e.py",
+                "-v"
+            ],
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "pytest: integration api",
+            "type": "shell",
+            "command": ".\\.venv\\Scripts\\python.exe",
+            "args": [
+                "-m",
+                "pytest",
+                "tests/integration/test_api_integracion.py",
+                "-v"
+            ],
+            "options": {
+                "env": {
+                    "DATABASE_URL": "postgresql://postgres:postgres@localhost:5433/ticketfast_test"
+                }
+            },
+            "group": "test",
+            "problemMatcher": []
+        }
+    ]
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>TicketFast - Reservas</title>
+</head>
+<body>
+  <h1>Reserva de Boletos - TicketFast</h1>
+
+  <form id="form-reserva">
+    <label>Correo del cliente</label>
+    <input type="email" data-testid="input-email-cliente" />
+
+    <label>Zona</label>
+    <select data-testid="select-zona-evento">
+      <option value="">Seleccione</option>
+      <option value="VIP">VIP</option>
+      <option value="General">General</option>
+    </select>
+
+    <label>Cantidad de asientos</label>
+    <input type="number" data-testid="input-cantidad-asientos" />
+
+    <button type="button" data-testid="btn-confirmar-reserva">Confirmar Reserva</button>
+  </form>
+
+  <div data-testid="seccion-resumen-total">Sin reservas aun</div>
+
+  <script>
+    const API_BASE = "http://localhost:8001";
+    const EVENTO_ID = "frontend-evento-mock";
+
+    document.querySelector('[data-testid="btn-confirmar-reserva"]').addEventListener("click", async () => {
+      const email = document.querySelector('[data-testid="input-email-cliente"]').value;
+      const zona = document.querySelector('[data-testid="select-zona-evento"]').value;
+      const cantidad = parseInt(document.querySelector('[data-testid="input-cantidad-asientos"]').value, 10);
+
+      await fetch(`${API_BASE}/reservas/${EVENTO_ID}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cliente_email: email, zona: zona, cantidad: cantidad })
+      });
+
+      const resumenResp = await fetch(`${API_BASE}/reservas/${EVENTO_ID}/resumen`);
+      const resumenData = await resumenResp.json();
+
+      const totalFormateado = resumenData.total_recaudado.toLocaleString("es-CO");
+      document.querySelector('[data-testid="seccion-resumen-total"]').textContent = `Total: ${totalFormateado}`;
+    });
+  </script>
+</body>
+</html>
