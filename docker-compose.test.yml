@@ -35,17 +35,3 @@ services:
       interval: 3s
       timeout: 5s
       retries: 20
-
-  test-runner:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      DATABASE_URL: postgresql://postgres:postgres@db-test:5432/ticketfast_test
-      API_BASE_URL: http://api-test:8000
-    command: ["python", "-m", "pytest", "tests", "-v"]
-    depends_on:
-      db-test:
-        condition: service_healthy
-      api-test:
-        condition: service_healthy
