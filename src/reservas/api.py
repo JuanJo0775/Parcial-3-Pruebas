@@ -1,10 +1,14 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-from src.database.config import get_db
+from src.database.config import get_db, crear_tablas
 from src.database.repositorio import ReservasRepositorio
 from pydantic import BaseModel
 
 app = FastAPI()
+
+@app.on_event("startup")
+def startup():
+    crear_tablas()
 
 class ReservaInput(BaseModel):
     cliente_email: str
